@@ -300,7 +300,10 @@ class EsphomeLight(EsphomeEntity[LightInfo, LightState], LightEntity):
 
     @property
     @esphome_state_property
-    def color_mode(self) -> ColorMode:
+    # The color mode property is required by the LightEntity base class
+    # but only if `is_on` is True which would not occur until after the
+    # state is available, so we can ignore the type hinting issues here.
+    def color_mode(self) -> ColorMode:  # type: ignore[override]
         """Return the color mode of the light."""
         if not self._supports_color_mode:
             supported_color_modes = self.supported_color_modes
